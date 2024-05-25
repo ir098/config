@@ -228,7 +228,7 @@ const hashName = hashNameMatches && hashNameMatches[1];
         let newToken=document.getElementById("sNewToken");
                 newToken.textContent=convert(name,atob(id));
         let oldToken=document.getElementById("taToken");
-        oldToken.textContent='vless://'+id+'@172.82.2.3:465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#'+name;
+        oldToken.textContent='vless://'+atob(id)+'@172.82.2.3:465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#'+name;
         copyToken();
     }
 // document.write('vmess://'+btoa(JSON.stringify(config)));
