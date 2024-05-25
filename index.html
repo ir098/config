@@ -1,0 +1,32 @@
+<script>
+// URL مورد نظر را دریافت کنید. در اینجا برای نمونه window.location مورد استفاده قرار گرفته‌است،
+// اما شما می‌توانید URL را به صورت مستقیم هم وارد کنید.
+const currentUrl = window.location.href; // یا "https://ir098.github.io/config/?id=NjI2YTQ..."
+
+// URLSearchParams را با URL فراهم شده ایجاد کنید.
+const searchParams = new URLSearchParams(new URL(currentUrl).search);
+
+// حالا شما می‌توانید id را از URL بوسیله‌ی URLSearchParams دریافت کنید.
+const id = searchParams.get('id');
+const name = searchParams.get('n');
+let config={
+  "v": "2",
+  "ps": "ahmad2",
+  "add": "iran20240525.best1server.megacloud.oceancom.digital.d11.site",
+  "port": "4546",
+  "id": "dddd",
+  "aid": "0",
+  "scy": "auto",
+  "net": "tcp",
+  "type": "http",
+  "host": "zula.ir",
+  "path": "/api,/dl",
+  "tls": "none",
+  "sni": "",
+  "alpn": ""
+}
+config.ps=name;
+config.id=atob(id);
+
+document.write('vmess://'+btoa(JSON.stringify(config)));
+</script>
