@@ -1,32 +1,181 @@
-<script>
-// URL مورد نظر را دریافت کنید. در اینجا برای نمونه window.location مورد استفاده قرار گرفته‌است،
-// اما شما می‌توانید URL را به صورت مستقیم هم وارد کنید.
-const currentUrl = window.location.href; // یا "https://ir098.github.io/config/?id=NjI2YTQ..."
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Convert Tokens</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-// URLSearchParams را با URL فراهم شده ایجاد کنید.
-const searchParams = new URLSearchParams(new URL(currentUrl).search);
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
 
-// حالا شما می‌توانید id را از URL بوسیله‌ی URLSearchParams دریافت کنید.
-const id = searchParams.get('id');
-const name = searchParams.get('n');
-let config={
-  "v": "2",
-  "ps": "ahmad2",
-  "add": "iran20240525.best1server.megacloud.oceancom.digital.d11.site",
-  "port": "4546",
-  "id": "dddd",
-  "aid": "0",
-  "scy": "auto",
-  "net": "tcp",
-  "type": "http",
-  "host": "zula.ir",
-  "path": "/api,/dl",
-  "tls": "none",
-  "sni": "",
-  "alpn": ""
-}
-config.ps=name;
-config.id=atob(id);
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/bootstrap/css/bootstrap.min.css"
+    />
 
-document.write('vmess://'+btoa(JSON.stringify(config)));
-</script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="fonts/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css" />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/css-hamburgers/hamburgers.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/animsition/css/animsition.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/select2/select2.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/daterangepicker/daterangepicker.css"
+    />
+
+    <link rel="stylesheet" type="text/css" href="css/util.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+    <meta name="robots" content="noindex, follow" />
+    <style>
+      span {
+        font-family: myFont;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-contact100">
+      <div class="wrap-contact100">
+    
+        <span class="contact100-form-title"
+            >توکن خود را در باکس زیر قرار دهید و دکمه تبدیل را بزنید</span
+          >
+          <div
+            class="wrap-input100 validate-input"
+            data-validate="لطفاً توکن خود را قرار دهید"
+          >
+            <textarea id="taToken" class="input100" name="token"></textarea>
+            <span class="focus-input100"></span>
+          </div>
+          <div id="showError" class="alert alert-danger text-center" role="alert" style="display: none;">
+          </div>
+          <div id="tokenIsEmpty" class="alert alert-danger text-center" role="alert" style="display: none;">
+            لطفاً توکن خود را قرار دهید
+          </div>
+          <div id="newTokenCopy" class="alert alert-success text-center" role="alert" style="display: none;">
+            توکن جدید کپی شد
+          </div>
+          <div id="errorHappend" class="alert alert-danger text-center" role="alert" style="display: none;">
+            خطایی رخ داده است مجدد تلاش کنید
+          </div>
+          <div class="container-contact100-form-btn">
+            <button class="contact100-form-btn" onclick="copyToken()">
+              <span>
+                کپی
+                <i class="fa fa-clipboard m-r-6" aria-hidden="true"></i>
+              </span>
+            </button>
+
+            <button class="contact100-form-btn" onclick="convertToken()">
+              <span>
+                تبدیل
+                <i class="fa fa-refresh m-r-6" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+        </form>
+
+        <span id="sNewToken" class="contact100-form-title" style="margin-top: 30px;"></span>
+    </div>
+    <div id="dropDownSelect1"></div>
+
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+
+    <script src="vendor/animsition/js/animsition.min.js"></script>
+
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="vendor/select2/select2.min.js"></script>
+
+    <script src="vendor/daterangepicker/moment.min.js"></script>
+    <script src="vendor/daterangepicker/daterangepicker.js"></script>
+
+    <script src="vendor/countdowntime/countdowntime.js"></script>
+
+    <!-- <script src="js/main.js"></script> -->
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-23581568-13");
+    </script>
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js/vef91dfe02fce4ee0ad053f6de4f175db1715022073587"
+      integrity="sha512-sDIX0kl85v1Cl5tu4WGLZCpH/dV9OHbA4YlKCuCiMmOQIk4buzoYDZSFj+TvC71mOBLh8CDC/REgE0GX0xcbjA=="
+      data-cf-beacon='{"rayId":"8893e28a7a3b81df","version":"2024.4.1","token":"cd0b4b3a733644fc843ef0b185f98241"}'
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      let convertToken = () => {
+        let oldToken = document.getElementById("taToken").value;
+        let tokenIsEmpty=document.getElementById("tokenIsEmpty");
+        if(oldToken==""){
+            tokenIsEmpty.style.display = "block";
+            return;
+        }else{
+            tokenIsEmpty.style.display = "none";
+        }
+        oldToken = oldToken.trim();
+        /*عملیات تغییر توکن*/
+        let newToken=document.getElementById("sNewToken");
+        newToken.textContent=oldToken;
+      };
+
+
+      let copyToken=()=>{
+        let newToken=document.getElementById("sNewToken").textContent;
+        let newTokenCopy=document.getElementById("newTokenCopy");
+        let errorHappend=document.getElementById("errorHappend");
+        let tokenIsEmpty=document.getElementById("tokenIsEmpty");
+        let showError=document.getElementById("showError");
+
+        if(newToken==""){
+            showError.textContent="ابتدا توکن خود را قرار دهید و بعد"
+            tokenIsEmpty.style.display = "block";
+            return;
+        }else{
+            tokenIsEmpty.style.display = "none";
+        }
+
+        navigator.clipboard.writeText(newToken).then(function() {
+            newTokenCopy.style.display = "block";
+        }).catch(function(error) {
+            errorHappend.style.display = "block";
+         });
+      }
+    </script>
+  </body>
+</html>
