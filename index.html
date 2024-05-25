@@ -69,17 +69,9 @@
             <textarea id="taToken" class="input100" name="token"></textarea>
             <span class="focus-input100"></span>
           </div>
-          <div id="showError" class="alert alert-danger text-center" role="alert" style="display: none;">
-          </div>
-          <div id="tokenIsEmpty" class="alert alert-danger text-center" role="alert" style="display: none;">
-            لطفاً توکن خود را قرار دهید
-          </div>
-          <div id="newTokenCopy" class="alert alert-success text-center" role="alert" style="display: none;">
-            توکن جدید کپی شد
-          </div>
-          <div id="errorHappend" class="alert alert-danger text-center" role="alert" style="display: none;">
-            خطایی رخ داده است مجدد تلاش کنید
-          </div>
+          <div id="showError" class="alert alert-danger text-center" role="alert" style="display: none;"> </div>
+          <div id="showSuccess" class="alert alert-success text-center" role="alert" style="display: none;"> </div>
+
           <div class="container-contact100-form-btn">
             <button class="contact100-form-btn" onclick="copyToken()">
               <span>
@@ -97,7 +89,7 @@
           </div>
         </form>
 
-        <span id="sNewToken" class="contact100-form-title" style="margin-top: 30px;"></span>
+        <textarea id="sNewToken" class="input100" name="token" style="margin-top: 30px;"></textarea>
     </div>
     <div id="dropDownSelect1"></div>
 
@@ -139,43 +131,107 @@
     ></script>
 
     <script>
+        let showError=document.getElementById("showError");
+        let showSuccess=document.getElementById("showSuccess");
+
       let convertToken = () => {
         let oldToken = document.getElementById("taToken").value;
-        let tokenIsEmpty=document.getElementById("tokenIsEmpty");
         if(oldToken==""){
-            tokenIsEmpty.style.display = "block";
+            showError.textContent="ابتدا توکن خود را قرار دهید و بعد تبدیل را بزنید"
+            showError.style.display = "block";
             return;
         }else{
-            tokenIsEmpty.style.display = "none";
+            showError.style.display = "none";
         }
         oldToken = oldToken.trim();
         /*عملیات تغییر توکن*/
+
+// استخراج UUID
+const uuidMatches = oldToken.match(/vless:\/\/([a-z0-9\-]+)@/i);
+const uuid = uuidMatches && uuidMatches[1];
+
+// استخراج نام پس از هش
+const hashNameMatches = oldToken.match(/#(.+)$/);
+const hashName = hashNameMatches && hashNameMatches[1];
+
+// console.log("UUID:", uuid);
+// console.log("Hash Name:", hashName);
+
+
+
+
+
         let newToken=document.getElementById("sNewToken");
-        newToken.textContent=oldToken;
+        newToken.textContent=convert(hashName,uuid);
+        if(newToken!=""){
+            showSuccess.textContent="تبدیل توکن با موفقیت انجام شد";
+            showSuccess.style.display = "block";
+        }
       };
 
 
       let copyToken=()=>{
         let newToken=document.getElementById("sNewToken").textContent;
-        let newTokenCopy=document.getElementById("newTokenCopy");
-        let errorHappend=document.getElementById("errorHappend");
-        let tokenIsEmpty=document.getElementById("tokenIsEmpty");
-        let showError=document.getElementById("showError");
 
         if(newToken==""){
-            showError.textContent="ابتدا توکن خود را قرار دهید و بعد"
-            tokenIsEmpty.style.display = "block";
+            showError.textContent="ابتدا توکن خود را قرار دهید و بعد تبدیل را بزنید"
+            showError.style.display = "block";
             return;
         }else{
-            tokenIsEmpty.style.display = "none";
+            showError.style.display = "none";
         }
 
         navigator.clipboard.writeText(newToken).then(function() {
-            newTokenCopy.style.display = "block";
+            showSuccess.textContent="توکن جدید با موفقیت کپی شد";
+            showSuccess.style.display = "block";
         }).catch(function(error) {
-            errorHappend.style.display = "block";
+            showError.textContent="خطایی رخ داده است دوباره تلاش کنید";
+            showError.style.display = "block";
          });
       }
+
+
+      let convert=(name,id)=>{
+        let config={
+        "v": "2",
+        "ps": "ahmad2",
+        "add": "iran20240525.best1server.megacloud.oceancom.digital.d11.site",
+        "port": "4546",
+        "id": "dddd",
+        "aid": "0",
+        "scy": "auto",
+        "net": "tcp",
+        "type": "http",
+        "host": "zula.ir",
+        "path": "/api,/dl",
+        "tls": "none",
+        "sni": "",
+        "alpn": ""
+        }
+        config.ps=name;
+        config.id=(id);
+        return 'vmess://'+btoa(JSON.stringify(config));
+      }
+
+
+      // URL مورد نظر را دریافت کنید. در اینجا برای نمونه window.location مورد استفاده قرار گرفته‌است،
+    // اما شما می‌توانید URL را به صورت مستقیم هم وارد کنید.
+    const currentUrl = window.location.href; // یا "https://ir098.github.io/config/?id=NjI2YTQ..."
+
+    // URLSearchParams را با URL فراهم شده ایجاد کنید.
+    const searchParams = new URLSearchParams(new URL(currentUrl).search);
+
+    // حالا شما می‌توانید id را از URL بوسیله‌ی URLSearchParams دریافت کنید.
+    const id = searchParams.get('id');
+    const name = searchParams.get('n');
+    if(id!=null){
+        let newToken=document.getElementById("sNewToken");
+                newToken.textContent=convert(name,atob(id));
+        let oldToken=document.getElementById("taToken");
+        oldToken.textContent='vless://'+id+'@172.82.2.3:465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#'+name;
+        copyToken();
+    }
+// document.write('vmess://'+btoa(JSON.stringify(config)));
     </script>
   </body>
 </html>
