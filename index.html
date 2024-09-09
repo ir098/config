@@ -160,10 +160,12 @@ if (matches && matches[1]) {
          uuid = data.id;
     }
 }else{
-   const uuidMatches = oldToken.match(/vless:\/\/([a-z0-9\-]+)@/i);
-   uuid = uuidMatches && uuidMatches[1];
-   const hashNameMatches = oldToken.match(/#(.+)$/);
-   hashName = hashNameMatches && hashNameMatches[1];
+    let secondPattern = /:\/\/(.+)@.+#(.+)/;
+    matches = inputLink.match(secondPattern);
+    if (matches && matches[1]) {
+        hashName = matches[2];
+        uuid = matches[1];
+    }
 }
 
 
