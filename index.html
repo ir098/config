@@ -149,10 +149,8 @@
 const uuid = '';
 const hashName ='';
         
-let newLink = oldToken;
 let pattern = /vmess:\/\/(\S+)/;
-let matches = inputLink.match(pattern);
-
+let matches = oldToken.match(pattern);
 if (matches && matches[1]) {
     let decodedToken = atob(matches[1]);
     let data = JSON.parse(decodedToken);
