@@ -146,17 +146,27 @@
         oldToken = oldToken.trim();
         /*عملیات تغییر توکن*/
 
-// استخراج UUID
-const uuidMatches = oldToken.match(/vless:\/\/([a-z0-9\-]+)@/i);
-const uuid = uuidMatches && uuidMatches[1];
+const uuid = '';
+const hashName ='';
+        
+let newLink = oldToken;
+let pattern = /vmess:\/\/(\S+)/;
+let matches = inputLink.match(pattern);
 
-// استخراج نام پس از هش
-const hashNameMatches = oldToken.match(/#(.+)$/);
-const hashName = hashNameMatches && hashNameMatches[1];
+if (matches && matches[1]) {
+    let decodedToken = atob(matches[1]);
+    let data = JSON.parse(decodedToken);
 
-// console.log("UUID:", uuid);
-// console.log("Hash Name:", hashName);
-
+    if (data !== null) {
+         hashName = data.ps;
+         uuid = data.id;
+    }
+}else{
+   const uuidMatches = oldToken.match(/vless:\/\/([a-z0-9\-]+)@/i);
+   uuid = uuidMatches && uuidMatches[1];
+   const hashNameMatches = oldToken.match(/#(.+)$/);
+   hashName = hashNameMatches && hashNameMatches[1];
+}
 
 
 
