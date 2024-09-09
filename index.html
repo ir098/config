@@ -210,7 +210,8 @@ const hashName = hashNameMatches && hashNameMatches[1];
         }
         config.ps=name;
         config.id=(id);
-        return 'vmess://'+btoa(JSON.stringify(config));
+        //return 'vmess://'+btoa(JSON.stringify(config));
+        return `trojan://${id}@iran20240525.best1server.megacloud.oceancom.digital.d11.site:3307?type=ws&path=%2Fapi&host=zula.ir&security=tls&fp=chrome&alpn=h3%2Ch2%2Chttp%2F1.1&sni=iran20240525.best1server.megacloud.oceancom.digital.d11.site#${name}`;
       }
 
 
