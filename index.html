@@ -161,7 +161,7 @@ if (matches && matches[1]) {
     }
 }else{
     let secondPattern = /:\/\/(.+)@.+#(.+)/;
-    matches = inputLink.match(secondPattern);
+    matches = oldToken.match(secondPattern);
     if (matches && matches[1]) {
         hashName = matches[2];
         uuid = matches[1];
