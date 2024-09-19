@@ -92,20 +92,9 @@
 
   <!-- <script src="js/main.js"></script> -->
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-  <script>
-    // window.dataLayer = window.dataLayer || [];
-    // function gtag() {
-    //   dataLayer.push(arguments);
-    // }
-    // gtag("js", new Date());
 
-    // gtag("config", "UA-23581568-13");
-  </script>
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vef91dfe02fce4ee0ad053f6de4f175db1715022073587"
-    integrity="sha512-sDIX0kl85v1Cl5tu4WGLZCpH/dV9OHbA4YlKCuCiMmOQIk4buzoYDZSFj+TvC71mOBLh8CDC/REgE0GX0xcbjA=="
-    data-cf-beacon='{"rayId":"8893e28a7a3b81df","version":"2024.4.1","token":"cd0b4b3a733644fc843ef0b185f98241"}'
-    crossorigin="anonymous"></script>
+  <script src="js/qrious2.min.js?2.3.7"></script>
+
   <script>
     function replace_all(token, data) {
       return token.replaceAll('${id}', data.id).replaceAll('${add}', data.url).replaceAll('${sni}', data.url).replaceAll('${name}', data.name);
@@ -163,6 +152,18 @@
       showError.style.display = "block";
       return 'error';
     }
+    function setQrCode(elmentId, content) {
+        new QRious({
+          element: document.querySelector('#' + elmentId),
+          size: 200,
+          value: content,
+          background: 'white',
+          backgroundAlpha: 0,
+          foreground: 'black',
+          padding: 2,
+          level: 'L'
+        });
+      }
   </script>
 
   <script>
@@ -197,9 +198,10 @@
             newToken = replace_all(config, data);
           }
           result.innerHTML += `
+          <center><canvas  id="qr${index}" class="text-center" ></canvas></center>
           <div id="showError${index}" class="alert alert-danger text-center" role="alert" style="display: none;"> </div>
           <div id="showSuccess${index}" class="alert alert-success text-center" role="alert" style="display: none;"> </div>
-          <textarea id="newToken${index}" class="input100" name="token" style="margin-top: 30px;">${newToken}</textarea><br>  
+          <textarea id="newToken${index}" class="input100" name="token" style="margin-top: 30px;">${newToken}</textarea> 
           <div class="container-contact100-form-btn">
             <button class="contact100-form-btn" onclick="copyToken(${index})">
               <span>
@@ -208,7 +210,9 @@
               </span>
             </button>
           </div>`;
-
+          setTimeout(function(){
+            setQrCode('qr'+index,newToken);
+          },500);
         }
       }
       showSuccess.textContent = "تبدیل توکن با موفقیت انجام شد";
