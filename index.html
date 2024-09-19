@@ -132,7 +132,7 @@
             uuid = matches[1];
             add = matches[2];
             hashName = matches[3];
-          }else{
+          } else {
             return show_error('فرمت توکن شناسایی نشد');
           }
         }
@@ -147,7 +147,7 @@
             }
           }
           for (i = 0; i < value.old_urls.length; i++) {
-            if (value.urls[i] == add) {
+            if (value.old_urls[i] == add) {
               return key;
             }
           }
@@ -172,19 +172,20 @@
         showSuccess.style.display = "none";
         newToken.textContent = '';
         let pt = parseToken(document.getElementById("taToken").value.trim());
-        if(pt=='error'){
+        if (pt == 'error') {
           return;
         }
         let op = find_op(pt.add);
-        if(op=='no'){
+        if (op == 'no') {
           return show_error('توکن شناسایی نشد');
         }
 
+        myData.configs.vmess.add = myData.op[op].last_conf[0].url;
         myData.configs.vmess.ps = pt.name;
         myData.configs.vmess.id = pt.id;
-        newToken.textContent = 'vmess://'+btoa(JSON.stringify(myData.configs.vmess));
+        newToken.textContent = 'vmess://' + btoa(JSON.stringify(myData.configs.vmess));
 
-        //newToken.textContent = myData.configs.trojan.replaceAll('${id}',pt.id).replaceAll('${add}',myData.op[op].urls[0]).replaceAll('${sni}',myData.op[op].urls[0]).replaceAll('${name}',pt.name);
+        //newToken.textContent = myData.configs.trojan.replaceAll('${id}',pt.id).replaceAll('${add}',myData.op[op].last_conf[0].url).replaceAll('${sni}',myData.op[op].last_conf[0].url).replaceAll('${name}',pt.name);
         // newToken.textContent = convert(pt.name, pt.id,op);
         if (newToken != "") {
           showSuccess.textContent = "تبدیل توکن با موفقیت انجام شد";
