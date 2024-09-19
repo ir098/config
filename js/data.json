@@ -1,9 +1,17 @@
 {
-    "op":{
+    "op": {
         "mtn": {
-            "urls": [
-                "iram1tn.best1server.megacloud.oceancom.digital.x98.shop",
-                "iram2tn.best1server.megacloud.oceancom.digital.x98.shop"
+            "last_conf": [
+                {
+                    "url": "iram1tn.best1server.megacloud.oceancom.digital.x98.shop",
+                    "config": "vmess",
+                    "status": "active"
+                },
+                {
+                    "url": "iram2tn.best1server.megacloud.oceancom.digital.x98.shop",
+                    "config": "trojan",
+                    "status": "deactive"
+                }
             ],
             "old_urls": [
                 "iran20240525.best1server.megacloud.oceancom.digital.d11.site",
@@ -13,8 +21,12 @@
             ]
         },
         "mci": {
-            "urls": [
-                "iram1ci.best1server.megacloud.oceancom.digital.x98.shop"
+            "last_conf": [
+                {
+                    "url": "iram1ci.best1server.megacloud.oceancom.digital.x98.shop",
+                    "config": "trojan",
+                    "status": "active"
+                }
             ],
             "old_urls": [
                 "best21server.megacloud.oceancom.digital.d11.site",
@@ -23,9 +35,9 @@
             ]
         }
     },
-    "configs":{
-        "trojan":"trojan://${id}@${add}:3307?type=ws&path=%2Fapi&host=zula.ir&security=tls&fp=chrome&alpn=h3%2Ch2%2Chttp%2F1.1&sni=${sni}#${name}",
-        "vmess":{
+    "configs": {
+        "trojan": "trojan://${id}@${add}:3307?type=ws&path=%2Fapi&host=zula.ir&security=tls&fp=chrome&alpn=h3%2Ch2%2Chttp%2F1.1&sni=${sni}#${name}",
+        "vmess": {
             "v": "2",
             "ps": "ahmad2",
             "add": "iran20240525.best1server.megacloud.oceancom.digital.d11.site",
@@ -40,6 +52,6 @@
             "tls": "none",
             "sni": "",
             "alpn": ""
-          }
+        }
     }
 }

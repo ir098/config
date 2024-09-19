@@ -141,8 +141,8 @@
       function find_op(add) {
         for (const [key, value] of Object.entries(myData.op)) {
           //console.log(`${key}: ${value}`);
-          for (i = 0; i < value.urls.length; i++) {
-            if (value.urls[i] == add) {
+          for (i = 0; i < value.last_conf.length; i++) {
+            if (value.last_conf[i].url == add) {
               return key;
             }
           }
