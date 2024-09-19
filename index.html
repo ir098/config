@@ -54,12 +54,12 @@
       <div id="showSuccess" class="alert alert-success text-center" role="alert" style="display: none;"> </div>
 
       <div class="container-contact100-form-btn">
-        <button class="contact100-form-btn" onclick="copyToken()">
+        <!-- <button class="contact100-form-btn" onclick="copyToken()">
           <span>
             کپی
             <i class="fa fa-clipboard m-r-6" aria-hidden="true"></i>
           </span>
-        </button>
+        </button> -->
 
         <button class="contact100-form-btn" onclick="convertToken()">
           <span>
@@ -69,171 +69,186 @@
         </button>
       </div>
       </form>
+      <div id="result">
 
-      <textarea id="sNewToken" class="input100" name="token" style="margin-top: 30px;"></textarea>
+      </div>
     </div>
-    <div id="dropDownSelect1"></div>
+  </div>
+  <div id="dropDownSelect1"></div>
 
-    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+  <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 
-    <script src="vendor/animsition/js/animsition.min.js"></script>
+  <script src="vendor/animsition/js/animsition.min.js"></script>
 
-    <script src="vendor/bootstrap/js/popper.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="vendor/bootstrap/js/popper.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
-    <script src="vendor/select2/select2.min.js"></script>
+  <script src="vendor/select2/select2.min.js"></script>
 
-    <script src="vendor/daterangepicker/moment.min.js"></script>
-    <script src="vendor/daterangepicker/daterangepicker.js"></script>
+  <script src="vendor/daterangepicker/moment.min.js"></script>
+  <script src="vendor/daterangepicker/daterangepicker.js"></script>
 
-    <script src="vendor/countdowntime/countdowntime.js"></script>
+  <script src="vendor/countdowntime/countdowntime.js"></script>
 
-    <!-- <script src="js/main.js"></script> -->
+  <!-- <script src="js/main.js"></script> -->
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+  <script>
+    // window.dataLayer = window.dataLayer || [];
+    // function gtag() {
+    //   dataLayer.push(arguments);
+    // }
+    // gtag("js", new Date());
+
+    // gtag("config", "UA-23581568-13");
+  </script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vef91dfe02fce4ee0ad053f6de4f175db1715022073587"
+    integrity="sha512-sDIX0kl85v1Cl5tu4WGLZCpH/dV9OHbA4YlKCuCiMmOQIk4buzoYDZSFj+TvC71mOBLh8CDC/REgE0GX0xcbjA=="
+    data-cf-beacon='{"rayId":"8893e28a7a3b81df","version":"2024.4.1","token":"cd0b4b3a733644fc843ef0b185f98241"}'
+    crossorigin="anonymous"></script>
+  <script>
+    function replace_all(token, data) {
+      return token.replaceAll('${id}', data.id).replaceAll('${add}', data.url).replaceAll('${sni}', data.url).replaceAll('${name}', data.name);
+    }
+    function parseToken(oldToken) {
+      if (oldToken == "") {
+        return show_error("ابتدا توکن خود را قرار دهید و بعد تبدیل را بزنید");
       }
-      gtag("js", new Date());
+      let uuid = '';
+      let hashName = '';
+      let add = '';
 
-      gtag("config", "UA-23581568-13");
-    </script>
-    <script defer
-      src="https://static.cloudflareinsights.com/beacon.min.js/vef91dfe02fce4ee0ad053f6de4f175db1715022073587"
-      integrity="sha512-sDIX0kl85v1Cl5tu4WGLZCpH/dV9OHbA4YlKCuCiMmOQIk4buzoYDZSFj+TvC71mOBLh8CDC/REgE0GX0xcbjA=="
-      data-cf-beacon='{"rayId":"8893e28a7a3b81df","version":"2024.4.1","token":"cd0b4b3a733644fc843ef0b185f98241"}'
-      crossorigin="anonymous"></script>
-    <script>
-      function parseToken(oldToken) {
-        if (oldToken == "") {
-          return show_error("ابتدا توکن خود را قرار دهید و بعد تبدیل را بزنید");
+      let pattern = /vmess:\/\/(\S+)/;
+      let matches = oldToken.match(pattern);
+      if (matches && matches[1]) {
+        let decodedToken = atob(matches[1]);
+        let data = JSON.parse(decodedToken);
+
+        if (data !== null) {
+          hashName = data.ps;
+          uuid = data.id;
+          add = data.add;
         }
-        let uuid = '';
-        let hashName = '';
-        let add = '';
-
-        let pattern = /vmess:\/\/(\S+)/;
-        let matches = oldToken.match(pattern);
+      } else {
+        let secondPattern = /:\/\/(.+)@(.+):.+#(.+)/;
+        matches = oldToken.match(secondPattern);
         if (matches && matches[1]) {
-          let decodedToken = atob(matches[1]);
-          let data = JSON.parse(decodedToken);
-
-          if (data !== null) {
-            hashName = data.ps;
-            uuid = data.id;
-            add = data.add;
-          }
+          uuid = matches[1];
+          add = matches[2];
+          hashName = matches[3];
         } else {
-          let secondPattern = /:\/\/(.+)@(.+):.+#(.+)/;
-          matches = oldToken.match(secondPattern);
-          if (matches && matches[1]) {
-            uuid = matches[1];
-            add = matches[2];
-            hashName = matches[3];
+          return show_error('فرمت توکن شناسایی نشد');
+        }
+      }
+      return { id: uuid, add: add, name: hashName };
+    }
+    function find_op(add) {
+      for (const [key, value] of Object.entries(myData.op)) {
+        //console.log(`${key}: ${value}`);
+        for (i = 0; i < value.last_conf.length; i++) {
+          if (value.last_conf[i].url == add) {
+            return key;
+          }
+        }
+        for (i = 0; i < value.old_urls.length; i++) {
+          if (value.old_urls[i] == add) {
+            return key;
+          }
+        }
+      }
+      return 'no';
+    }
+    function show_error(msg) {
+      showError.textContent = msg
+      showError.style.display = "block";
+      return 'error';
+    }
+  </script>
+
+  <script>
+    let showError = document.getElementById("showError");
+    let showSuccess = document.getElementById("showSuccess");
+    let result = document.getElementById("result");
+
+    let convertToken = () => {
+      showError.style.display = "none";
+      showSuccess.style.display = "none";
+      result.innerHTML = '';
+
+      let pt = parseToken(document.getElementById("taToken").value.trim());
+      if (pt == 'error') {
+        return;
+      }
+      let op = find_op(pt.add);
+      if (op == 'no') {
+        return show_error('توکن شناسایی نشد');
+      }
+      let data = { id: pt.id, name: pt.name, url: '' };
+      let last_conf = myData.op[op].last_conf;
+      for (let index = 0; index < last_conf.length; index++) {
+        const element = last_conf[index];
+        if (element.active == 1) {
+          data.url = element.url;
+          let config = myData.configs[element.config];
+          let newToken = '';
+          if (element.config.startsWith('vmess')) {
+            newToken = 'vmess://' + btoa(replace_all(JSON.stringify(config), data));
           } else {
-            return show_error('فرمت توکن شناسایی نشد');
+            newToken = replace_all(config, data);
           }
+          result.innerHTML += `
+          <div id="showError${index}" class="alert alert-danger text-center" role="alert" style="display: none;"> </div>
+          <div id="showSuccess${index}" class="alert alert-success text-center" role="alert" style="display: none;"> </div>
+          <textarea id="newToken${index}" class="input100" name="token" style="margin-top: 30px;">${newToken}</textarea><br>  
+          <div class="container-contact100-form-btn">
+            <button class="contact100-form-btn" onclick="copyToken(${index})">
+              <span>
+                کپی
+                <i class="fa fa-clipboard m-r-6" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>`;
+
         }
-        return { id: uuid, add: add, name: hashName };
       }
-      function find_op(add) {
-        for (const [key, value] of Object.entries(myData.op)) {
-          //console.log(`${key}: ${value}`);
-          for (i = 0; i < value.last_conf.length; i++) {
-            if (value.last_conf[i].url == add) {
-              return key;
-            }
-          }
-          for (i = 0; i < value.old_urls.length; i++) {
-            if (value.old_urls[i] == add) {
-              return key;
-            }
-          }
-        }
-        return 'no';
-      }
-      function show_error(msg) {
-        showError.textContent = msg
+    };
+
+
+    let copyToken = (i) => {
+      let newToken = document.getElementById("newToken" + i).textContent;
+      let showError = document.getElementById("showError" + i);
+      let showSuccess = document.getElementById("showSuccess" + i);
+
+
+      navigator.clipboard.writeText(newToken).then(function () {
+        showSuccess.textContent = "توکن جدید با موفقیت کپی شد";
+        showSuccess.style.display = "block";
+      }).catch(function (error) {
+        showError.textContent = "خطایی رخ داده است دوباره تلاش کنید";
         showError.style.display = "block";
-        return 'error';
-      }
-    </script>
+      });
+    }
 
-    <script>
-      let showError = document.getElementById("showError");
-      let showSuccess = document.getElementById("showSuccess");
+
+    // URL مورد نظر را دریافت کنید. در اینجا برای نمونه window.location مورد استفاده قرار گرفته‌است،
+    // اما شما می‌توانید URL را به صورت مستقیم هم وارد کنید.
+    const currentUrl = window.location.href; // یا "https://ir098.github.io/config/?id=NjI2YTQ..."
+
+    // URLSearchParams را با URL فراهم شده ایجاد کنید.
+    const searchParams = new URLSearchParams(new URL(currentUrl).search);
+
+    // حالا شما می‌توانید id را از URL بوسیله‌ی URLSearchParams دریافت کنید.
+    const id = searchParams.get('id');
+    const name = searchParams.get('n');
+    if (id != null) {
       let newToken = document.getElementById("sNewToken");
-      //find_op('iram1ci.best1server.megacloud.oceancom.digital.x98.shop')
-
-      let convertToken = () => {
-        showError.style.display = "none";
-        showSuccess.style.display = "none";
-        newToken.textContent = '';
-        let pt = parseToken(document.getElementById("taToken").value.trim());
-        if (pt == 'error') {
-          return;
-        }
-        let op = find_op(pt.add);
-        if (op == 'no') {
-          return show_error('توکن شناسایی نشد');
-        }
-
-        myData.configs.vmess.add = myData.op[op].last_conf[0].url;
-        myData.configs.vmess.ps = pt.name;
-        myData.configs.vmess.id = pt.id;
-        newToken.textContent = 'vmess://' + btoa(JSON.stringify(myData.configs.vmess));
-
-        //newToken.textContent = myData.configs.trojan.replaceAll('${id}',pt.id).replaceAll('${add}',myData.op[op].last_conf[0].url).replaceAll('${sni}',myData.op[op].last_conf[0].url).replaceAll('${name}',pt.name);
-        // newToken.textContent = convert(pt.name, pt.id,op);
-        if (newToken != "") {
-          showSuccess.textContent = "تبدیل توکن با موفقیت انجام شد";
-          showSuccess.style.display = "block";
-        }
-      };
-
-
-      let copyToken = () => {
-        let newToken = document.getElementById("sNewToken").textContent;
-
-        if (newToken == "") {
-          showError.textContent = "ابتدا توکن خود را قرار دهید و بعد تبدیل را بزنید"
-          showError.style.display = "block";
-          return;
-        } else {
-          showError.style.display = "none";
-        }
-
-        navigator.clipboard.writeText(newToken).then(function () {
-          showSuccess.textContent = "توکن جدید با موفقیت کپی شد";
-          showSuccess.style.display = "block";
-        }).catch(function (error) {
-          showError.textContent = "خطایی رخ داده است دوباره تلاش کنید";
-          showError.style.display = "block";
-        });
-      }
-
-
-      // URL مورد نظر را دریافت کنید. در اینجا برای نمونه window.location مورد استفاده قرار گرفته‌است،
-      // اما شما می‌توانید URL را به صورت مستقیم هم وارد کنید.
-      const currentUrl = window.location.href; // یا "https://ir098.github.io/config/?id=NjI2YTQ..."
-
-      // URLSearchParams را با URL فراهم شده ایجاد کنید.
-      const searchParams = new URLSearchParams(new URL(currentUrl).search);
-
-      // حالا شما می‌توانید id را از URL بوسیله‌ی URLSearchParams دریافت کنید.
-      const id = searchParams.get('id');
-      const name = searchParams.get('n');
-      if (id != null) {
-        let newToken = document.getElementById("sNewToken");
-        newToken.textContent = convert(name, atob(id));
-        let oldToken = document.getElementById("taToken");
-        oldToken.textContent = 'vless://' + atob(id) + '@172.82.2.3:465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#' + name;
-        copyToken();
-      }
-      // document.write('vmess://'+btoa(JSON.stringify(config)));
-    </script>
+      newToken.textContent = convert(name, atob(id));
+      let oldToken = document.getElementById("taToken");
+      oldToken.textContent = 'vless://' + atob(id) + '@172.82.2.3:465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#' + name;
+      copyToken();
+    }
+    // document.write('vmess://'+btoa(JSON.stringify(config)));
+  </script>
 </body>
 
 </html>
