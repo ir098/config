@@ -9,7 +9,7 @@
     <script>
       let myData=null;
       async function loadData() {
-        const response = await fetch('/js/data.json');
+        const response = await fetch('js/data.json');
         myData = await response.json();
         //console.log(myData); 
       }
