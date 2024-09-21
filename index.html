@@ -12,6 +12,7 @@
     async function loadData() {
       const response = await fetch('js/data.json');
       myData = await response.json();
+      setFromURL();
       //console.log(myData); 
     }
     loadData();
@@ -153,20 +154,48 @@
       return 'error';
     }
     function setQrCode(elmentId, content) {
-        new QRious({
-          element: document.querySelector('#' + elmentId),
-          size: 200,
-          value: content,
-          background: 'white',
-          backgroundAlpha: 0,
-          foreground: 'black',
-          padding: 2,
-          level: 'L'
-        });
-      }
-  </script>
+      new QRious({
+        element: document.querySelector('#' + elmentId),
+        size: 200,
+        value: content,
+        background: 'white',
+        backgroundAlpha: 0,
+        foreground: 'black',
+        padding: 2,
+        level: 'L'
+      });
+    }
+    let copyToken = (i) => {
+      let newToken = document.getElementById("newToken" + i).textContent;
+      let showError = document.getElementById("showError" + i);
+      let showSuccess = document.getElementById("showSuccess" + i);
 
-  <script>
+
+      navigator.clipboard.writeText(newToken).then(function () {
+        showSuccess.textContent = "توکن جدید با موفقیت کپی شد";
+        showSuccess.style.display = "block";
+      }).catch(function (error) {
+        showError.textContent = "خطایی رخ داده است دوباره تلاش کنید";
+        showError.style.display = "block";
+      });
+    }
+
+
+    let setFromURL = () => {
+      const currentUrl = window.location.href;
+      const searchParams = new URLSearchParams(new URL(currentUrl).search);
+      const id = searchParams.get('id');
+      const name = searchParams.get('n');
+      const op = searchParams.get('op');
+      if (id != null && name != '' && op != '') {
+        let add = myData.op[op].old_urls[0];
+        let taToken = document.getElementById("taToken");
+        taToken.value = 'vless://' + atob(id) + '@' + add + ':465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#' + name;
+        convertToken();
+        setTimeout(()=>{window.scrollTo(0, document.body.scrollHeight);},500);
+      }
+    }
+
     let showError = document.getElementById("showError");
     let showSuccess = document.getElementById("showSuccess");
     let result = document.getElementById("result");
@@ -210,50 +239,15 @@
               </span>
             </button>
           </div>`;
-          setTimeout(function(){
-            setQrCode('qr'+index,newToken);
-          },500);
+          setTimeout(function () {
+            setQrCode('qr' + index, newToken);
+          }, 500);
         }
       }
       showSuccess.textContent = "تبدیل توکن با موفقیت انجام شد";
       showSuccess.style.display = "block";
     };
-
-
-    let copyToken = (i) => {
-      let newToken = document.getElementById("newToken" + i).textContent;
-      let showError = document.getElementById("showError" + i);
-      let showSuccess = document.getElementById("showSuccess" + i);
-
-
-      navigator.clipboard.writeText(newToken).then(function () {
-        showSuccess.textContent = "توکن جدید با موفقیت کپی شد";
-        showSuccess.style.display = "block";
-      }).catch(function (error) {
-        showError.textContent = "خطایی رخ داده است دوباره تلاش کنید";
-        showError.style.display = "block";
-      });
-    }
-
-
-    // URL مورد نظر را دریافت کنید. در اینجا برای نمونه window.location مورد استفاده قرار گرفته‌است،
-    // اما شما می‌توانید URL را به صورت مستقیم هم وارد کنید.
-    const currentUrl = window.location.href; // یا "https://ir098.github.io/config/?id=NjI2YTQ..."
-
-    // URLSearchParams را با URL فراهم شده ایجاد کنید.
-    const searchParams = new URLSearchParams(new URL(currentUrl).search);
-
-    // حالا شما می‌توانید id را از URL بوسیله‌ی URLSearchParams دریافت کنید.
-    const id = searchParams.get('id');
-    const name = searchParams.get('n');
-    if (id != null) {
-      let newToken = document.getElementById("sNewToken");
-      newToken.textContent = convert(name, atob(id));
-      let oldToken = document.getElementById("taToken");
-      oldToken.textContent = 'vless://' + atob(id) + '@172.82.2.3:465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#' + name;
-      copyToken();
-    }
-    // document.write('vmess://'+btoa(JSON.stringify(config)));
+    setFromURL();
   </script>
 </body>
 
