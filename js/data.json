@@ -3,9 +3,14 @@
         "mtn": {
             "last_conf": [
                 {
-                    "url": "iram1tn.best1server.megacloud.oceancom.digital.x98.shop",
+                    "url": "iran20240525.best1server.megacloud.oceancom.digital.d11.site",
                     "config": "vmess",
                     "active": 1
+                },
+                {
+                    "url": "iram1tn.best1server.megacloud.oceancom.digital.x98.shop",
+                    "config": "vmess",
+                    "active": 0
                 },
                 {
                     "url": "iram2tn.best1server.megacloud.oceancom.digital.x98.shop",
@@ -14,6 +19,7 @@
                 }
             ],
             "old_urls": [
+                "iram1tn.best1server.megacloud.oceancom.digital.x98.shop",
                 "iran20240525.best1server.megacloud.oceancom.digital.d11.site",
                 "iranmtn1.best1server.digikala.megacloud.oceancom.digital.a24.top",
                 "iranmtn2.best1server.digikala.megacloud.oceancom.digital.a24.top",
