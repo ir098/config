@@ -3,7 +3,7 @@
         "mtn": {
             "last_conf": [
                 {
-                    "url": "iran120240927tn.best1server.megacloud.oceancom.digital.if1.shop",
+                    "url": "iran1tn20240927tn.best1server.megacloud.oceancom.digital.if1.shop",
                     "config": "vmess",
                     "active": 1
                 },
@@ -29,7 +29,7 @@
         "mci": {
             "last_conf": [
                 {
-                    "url": "iran120240927ci.best2server.megacloud.oceancom.digital.if1.shop",
+                    "url": "iran1ci20240927ci.best2server.megacloud.oceancom.digital.if1.shop",
                     "config": "trojan",
                     "active": 1
                 }
