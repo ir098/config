@@ -42,12 +42,12 @@
                 {
                     "url": "iram1ci.best1server.megacloud.oceancom.digital.x98.shop",
                     "config": "trojan",
-                    "active": 1
+                    "active": 0
                 },
                 {
                     "url": "iran1ci20240927ci.best2server.megacloud.oceancom.digital.if1.shop",
                     "config": "trojan",
-                    "active": 1
+                    "active": 0
                 }
             ],
             "old_urls": [
