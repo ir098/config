@@ -104,6 +104,7 @@
     function replace_all(token, data) {
       return token.replaceAll('${id}', data.id).replaceAll('${add}', data.url).replaceAll('${sni}', data.url).replaceAll('${name}', data.name);
     }
+
     function parseToken(oldToken) {
       if (oldToken == "") {
         return show_error("ابتدا توکن خود را قرار دهید و بعد تبدیل را بزنید");
@@ -128,9 +129,9 @@
         const regex = new RegExp(`${baseUrl}/\\?id=([^&]+)&n=([^&]+)&op=([^&#]+)`);
         matches = oldToken.match(regex);
         if (matches) {
-          uuid = matches[1],
-            hashName = matches[2],
-            op = matches[3]
+          uuid = atob(matches[1]),
+          hashName = matches[2],
+          op = matches[3]
         } else {
           let secondPattern = /:\/\/(.+)@(.+):.+#(.+)/;
           matches = oldToken.match(secondPattern);
@@ -145,6 +146,7 @@
       }
       return { id: uuid, add: add, name: hashName, op: op };
     }
+
     function find_op(add) {
       for (const [key, value] of Object.entries(myData.op)) {
         //console.log(`${key}: ${value}`);
@@ -205,7 +207,7 @@
         let taToken = document.getElementById("taToken");
         taToken.value = `${baseUrl}/?id=${id}&n=${name}&op=${op}#${name}`;
         setQrCode('qr_sub', taToken.value);
-        document.querySelector('.contact100-form-title').style.display='none';
+        document.querySelector('.contact100-form-title').style.display = 'none';
         // taToken.value = 'vless://' + atob(id) + '@' + add + ':465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#' + name;
         //convertToken();
         //setTimeout(() => { window.scrollTo(0, document.body.scrollHeight); }, 500);
@@ -266,7 +268,8 @@
       showSuccess.style.display = "block";
 
       let taToken = document.getElementById("taToken");
-      taToken.value = `${baseUrl}/?id=${pt.id}&n=${pt.name}&op=${pt.op}#${pt.name}`;
+      let id=btoa(pt.id);
+      taToken.value = `${baseUrl}/?id=${id}&n=${pt.name}&op=${pt.op}#${pt.name}`;
       setQrCode('qr_sub', taToken.value);
 
     };
