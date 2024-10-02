@@ -205,6 +205,7 @@
         let taToken = document.getElementById("taToken");
         taToken.value = `${baseUrl}/?id=${id}&n=${name}&op=${op}#${name}`;
         setQrCode('qr_sub', taToken.value);
+        document.querySelector('.contact100-form-title').style.display='none';
         // taToken.value = 'vless://' + atob(id) + '@' + add + ':465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#' + name;
         //convertToken();
         //setTimeout(() => { window.scrollTo(0, document.body.scrollHeight); }, 500);
