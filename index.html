@@ -47,6 +47,9 @@
     <div class="wrap-contact100">
 
       <span class="contact100-form-title">توکن خود را در باکس زیر قرار دهید و دکمه تبدیل را بزنید</span>
+      <center>
+        <canvas height="0" id="qr_sub"></canvas>
+      </center>
       <div class="wrap-input100 validate-input" data-validate="لطفاً توکن خود را قرار دهید">
         <textarea id="taToken" class="input100" name="token"></textarea>
         <span class="focus-input100"></span>
@@ -97,6 +100,7 @@
   <script src="js/qrious2.min.js?2.3.7"></script>
 
   <script>
+    let baseUrl = `https://plain-resonance-6ee3.textsilverr-com.workers.dev`;
     function replace_all(token, data) {
       return token.replaceAll('${id}', data.id).replaceAll('${add}', data.url).replaceAll('${sni}', data.url).replaceAll('${name}', data.name);
     }
@@ -107,6 +111,7 @@
       let uuid = '';
       let hashName = '';
       let add = '';
+      let op = '';
 
       let pattern = /vmess:\/\/(\S+)/;
       let matches = oldToken.match(pattern);
@@ -120,17 +125,25 @@
           add = data.add;
         }
       } else {
-        let secondPattern = /:\/\/(.+)@(.+):.+#(.+)/;
-        matches = oldToken.match(secondPattern);
-        if (matches && matches[1]) {
-          uuid = matches[1];
-          add = matches[2];
-          hashName = matches[3];
+        const regex = new RegExp(`${baseUrl}/\\?id=([^&]+)&n=([^&]+)&op=([^&#]+)`);
+        matches = oldToken.match(regex);
+        if (matches) {
+          uuid = matches[1],
+            hashName = matches[2],
+            op = matches[3]
         } else {
-          return show_error('فرمت توکن شناسایی نشد');
+          let secondPattern = /:\/\/(.+)@(.+):.+#(.+)/;
+          matches = oldToken.match(secondPattern);
+          if (matches && matches[1]) {
+            uuid = matches[1];
+            add = matches[2];
+            hashName = matches[3];
+          } else {
+            return show_error('فرمت توکن شناسایی نشد');
+          }
         }
       }
-      return { id: uuid, add: add, name: hashName };
+      return { id: uuid, add: add, name: hashName, op: op };
     }
     function find_op(add) {
       for (const [key, value] of Object.entries(myData.op)) {
@@ -188,11 +201,13 @@
       const name = searchParams.get('n');
       const op = searchParams.get('op');
       if (id != null && name != '' && op != '') {
-        let add = myData.op[op].old_urls[0];
+        //let add = myData.op[op].old_urls[0];
         let taToken = document.getElementById("taToken");
-        taToken.value = 'vless://' + atob(id) + '@' + add + ':465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#' + name;
-        convertToken();
-        setTimeout(()=>{window.scrollTo(0, document.body.scrollHeight);},500);
+        taToken.value = `${baseUrl}/?id=${id}&n=${name}&op=${op}#${name}`;
+        setQrCode('qr_sub', taToken.value);
+        // taToken.value = 'vless://' + atob(id) + '@' + add + ':465?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2#' + name;
+        //convertToken();
+        //setTimeout(() => { window.scrollTo(0, document.body.scrollHeight); }, 500);
       }
     }
 
@@ -209,12 +224,14 @@
       if (pt == 'error') {
         return;
       }
-      let op = find_op(pt.add);
-      if (op == 'no') {
-        return show_error('توکن شناسایی نشد');
+      if (pt.op == '') {
+        pt.op = find_op(pt.add);
+        if (pt.op == 'no') {
+          return show_error('توکن شناسایی نشد');
+        }
       }
       let data = { id: pt.id, name: pt.name, url: '' };
-      let last_conf = myData.op[op].last_conf;
+      let last_conf = myData.op[pt.op].last_conf;
       for (let index = 0; index < last_conf.length; index++) {
         const element = last_conf[index];
         if (element.active == 1) {
@@ -246,6 +263,11 @@
       }
       showSuccess.textContent = "تبدیل توکن با موفقیت انجام شد";
       showSuccess.style.display = "block";
+
+      let taToken = document.getElementById("taToken");
+      taToken.value = `${baseUrl}/?id=${pt.id}&n=${pt.name}&op=${pt.op}#${pt.name}`;
+      setQrCode('qr_sub', taToken.value);
+
     };
     setFromURL();
   </script>
