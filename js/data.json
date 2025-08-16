@@ -35,10 +35,15 @@
         "mci": {
             "last_conf": [
                 {
-                    "url": "iranmci20240722.best21server.megacloud.oceancom.digital.d11.site",
-                    "config": "trojan",
+                    "url": "dl.best1server.megacloud.oceancom.digital.d11.site.appgame.top",
+                    "config": "vless",
                     "active": 1
                 },
+                {
+                    "url": "iranmci20240722.best21server.megacloud.oceancom.digital.d11.site",
+                    "config": "trojan",
+                    "active": 2
+                },                
                 {
                     "url": "iram1ci.best1server.megacloud.oceancom.digital.x98.shop",
                     "config": "trojan",
