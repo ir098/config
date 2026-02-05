@@ -43,7 +43,7 @@
                     "url": "iranmci20240722.best21server.megacloud.oceancom.digital.d11.site",
                     "config": "trojan",
                     "active": 2
-                },                
+                },
                 {
                     "url": "iram1ci.best1server.megacloud.oceancom.digital.x98.shop",
                     "config": "trojan",
@@ -56,11 +56,17 @@
                 }
             ],
             "old_urls": [
-                "iran1ci20240927ci.best2server.megacloud.oceancom.digital.if1.shop",
-                "iram1ci.best1server.megacloud.oceancom.digital.x98.shop",
-                "best21server.megacloud.oceancom.digital.d11.site",
-                "iranmci20240722.best21server.megacloud.oceancom.digital.d11.site",
-                "iranmci1.best1server.digikala.megacloud.oceancom.digital.a24.top"
+            ]
+        },
+        "cf": {
+            "last_conf": [
+                {
+                    "url": "chatgpt.com",
+                    "config": "vless",
+                    "active": 1
+                }
+            ],
+            "old_urls": [
             ]
         }
     },
