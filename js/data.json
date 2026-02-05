@@ -55,24 +55,28 @@
                     "active": 0
                 }
             ],
-            "old_urls": [
-            ]
+            "old_urls": []
         },
         "cf": {
             "last_conf": [
                 {
                     "url": "chatgpt.com",
-                    "config": "vless",
+                    "config": "vless2",
+                    "active": 1
+                },
+                {
+                    "url": "www.speedtest.net",
+                    "config": "vless2",
                     "active": 1
                 }
             ],
-            "old_urls": [
-            ]
+            "old_urls": []
         }
     },
     "configs": {
         "trojan": "trojan://${id}@${add}:3307?type=ws&path=%2Fapi&host=zula.ir&security=tls&fp=chrome&alpn=h3%2Ch2%2Chttp%2F1.1&sni=${sni}#${name}",
         "vless": "vless://${id}@${add}:443?type=tcp&security=reality&pbk=C0Vh8pV3HVA6XhSVihzqDKn8k9oDRNEAGm2FYHYk6SM&fp=chrome&sni=google.com&sid=10eb95c2&spx=%2F&flow=xtls-rprx-vision#${name}",
+        "vless2": "vless://${id}@${add}:8443?encryption=none&security=tls&sni=${sni}&type=ws&host=${sni}&path=%2F35.52.123.123%3D49292#${name}",
         "vmess": {
             "v": "2",
             "ps": "${name}",
